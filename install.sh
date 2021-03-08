@@ -26,7 +26,6 @@ fi
 if [ ! -d ${HomeDir} ]
 then
     sudo mkdir ${HomeDir}
-    sudo chown -R ${UserName}:${GroupName} ${HomeDir}
 else
     echo "${HomeDir} exists, skipping."
 fi
@@ -42,9 +41,10 @@ if [ ! -d ${HomeDir}/${BrewPrefix}/.git ]
 then
     sudo -Hu ${UserName} git clone https://github.com/Homebrew/brew.git ${HomeDir}/${BrewPrefix}/
 else
-    echo "brew apears to be installed. Skipping."
-    # exit 0
+    echo "brew appears to be installed. Skipping."
 fi
+
+sudo chown -R ${UserName}:${GroupName} ${HomeDir}
 
 if [ ! -f ~/.config/homebrew.bash ]
 then
