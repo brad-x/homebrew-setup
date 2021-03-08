@@ -33,6 +33,6 @@ brew() {
     then
         command brew doctor "${@:2}"
     else
-        command sudo -Hu ${UserName} brew "$@"
+        command sudo -EHu ${UserName} brew "$@"
     fi
 }
