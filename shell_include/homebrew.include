@@ -1,4 +1,4 @@
-export PATH=${HomeDir}/${BrewPrefix}/bin:${HomeDir}/${BrewPrefix}/sbin:${PATH}
+export PATH=__HomeDir__/__BrewPrefix__/bin:__HomeDir__/__BrewPrefix__/sbin:${PATH}
 
 brew() {
     ## Debugging stuff
@@ -33,6 +33,6 @@ brew() {
     then
         command brew doctor "${@:2}"
     else
-        command sudo -EHu ${UserName} brew "$@"
+        command sudo -EHu __UserName__ brew "$@"
     fi
 }
