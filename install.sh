@@ -57,7 +57,7 @@ then
     echo ""
     echo "Secure homebrew setup is complete. To activate brew in your shell, add the following line:"
     echo ""
-    echo "source ~/.config/homebrew.bash"
+    echo "source ~/.config/homebrew.include"
     echo ""
-    echo "to your bash profile."
+    echo "to your shell profile."
 fi
