@@ -48,7 +48,11 @@ sudo chown -R ${UserName}:${GroupName} ${HomeDir}
 
 if [ ! -f ~/.config/homebrew.bash ]
 then
-    cat ./bashrc/homebrew.bash | envsubst '${HomeDir} ${BrewPrefix} ${UserName}' > ~/.config/homebrew.bash
+    cat ./shell_include/homebrew.include | \
+        sed s#__HomeDir__#${HomeDir}#g | \
+        sed s#__BrewPrefix__#${BrewPrefix}#g | \
+        sed s#__UserName__#${UserName}#g \
+        > ~/.config/homebrew.include
     echo ""
     echo ""
     echo "Secure homebrew setup is complete. To activate brew in your shell, add the following line:"
