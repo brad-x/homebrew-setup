@@ -49,9 +49,9 @@ sudo chown -R ${UserName}:${GroupName} ${HomeDir}
 if [ ! -f ~/.config/homebrew.bash ]
 then
     cat ./shell_include/homebrew.include | \
-        sed s#__HomeDir__#${HomeDir}#g | \
-        sed s#__BrewPrefix__#${BrewPrefix}#g | \
-        sed s#__UserName__#${UserName}#g \
+        /usr/bin/sed s#__HomeDir__#${HomeDir}#g | \
+        /usr/bin/sed s#__BrewPrefix__#${BrewPrefix}#g | \
+        /usr/bin/sed s#__UserName__#${UserName}#g \
         > ~/.config/homebrew.include
     echo ""
     echo ""
