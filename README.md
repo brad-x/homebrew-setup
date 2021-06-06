@@ -21,6 +21,8 @@ The script will:
 - Deploy a shell script wrapper for `brew`
     - This wrapper will execute most query and diagnostic functions of homebrew without changing user ID's or escalating privileges.
     - If `install`, `update`, `upgrade`, `reinstall`, `remove`, etc are executed the script will trap these and execute them as the `pkg` user. This creates an explicit interaction with the user for any modifications to the part of the filesystem hosting third party software and all actions are recorded in the system log.
+- Deploy a sudoers file permitting homebrew itself to perform administrative functions without prompting a second time for a user password.
+    - The security implications of this are light - the created user has no password or other means of being switched to other than by administrators who can otherwise become root directly.
 
 Usage
 ---
