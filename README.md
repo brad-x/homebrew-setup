@@ -33,6 +33,6 @@ In order to use this repo you must be able to run `sudo` on your Mac.
 1. chmod +x install.sh
 1. ./install.sh
     - You will be prompted for your user password
-1. The script will place `~/.config/homebrew.bash` in your home directory. Add the following line to your bash profile in order to start using it:
-    - `source ~/.config/homebrew.bash`
+1. The script will place `~/.config/homebrew.include` in your home directory and should work with any Bourne compatible shell. Add the following line to your shell profile in order to start using it:
+    - `source ~/.config/homebrew.include`
 1. The bash function strives to execute brew without privileges wherever possible - only administrative actions (install, reinstall, update, upgrade, remove, etc) require privilege elevation.
