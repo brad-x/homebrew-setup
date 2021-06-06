@@ -14,15 +14,12 @@ if dscl . list /Users/${UserName}
 then
     echo "User ${UserName} exists. Skipping."
 else
-    echo "Creating user ${UserName}. You will be prompted to set a password to be used"
-    echo "when homebrew itself needs to elevate privileges."
     sudo dscl . create /Users/${UserName}
     sudo dscl . create /Users/${UserName} RealName "${UserName} Account"
     sudo dscl . create /Users/${UserName} UniqueID ${NextID}
     sudo dscl . create /Users/${UserName} PrimaryGroupID ${StaffGID}
     sudo dscl . create /Users/${UserName} UserShell /bin/bash
     sudo dscl . create /Users/${UserName} NFSHomeDirectory ${HomeDir}
-    sudo dscl . passwd /Users/${UserName}
     sudo dscl . -append /Groups/admin GroupMembership ${UserName}
 fi
 
