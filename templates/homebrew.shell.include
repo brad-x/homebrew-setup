@@ -33,6 +33,8 @@ brew() {
     then
         command brew doctor "${@:2}"
     else
-        command sudo -EHu __UserName__ brew "$@"
+        command pushd __HomeDir__ > /dev/null && \
+                sudo -EHu __UserName__ brew "$@" && \
+                popd > /dev/null
     fi
 }
