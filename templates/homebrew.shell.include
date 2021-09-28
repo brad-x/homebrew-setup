@@ -33,8 +33,9 @@ brew() {
     then
         command brew doctor "${@:2}"
     else
-        command pushd __HomeDir__ > /dev/null && \
-                sudo -EHu __UserName__ brew "$@" && \
-                popd > /dev/null
+        command export BREW_OLD_PWD="${PWD}" && \
+                cd /opt/homebrew && \
+                sudo -EHu pkg brew "$@" ; \
+                cd ${BREW_OLD_PWD}
     fi
 }
