@@ -33,8 +33,8 @@ brew() {
     then
         command brew doctor "${@:2}"
     else
-        command export BREW_OLD_PWD="${PWD}" && \
-                cd /opt/homebrew && \
+	BREW_OLD_PWD="${PWD}"
+	command cd /opt/homebrew && \
                 sudo -EHu pkg brew "$@" ; \
                 cd ${BREW_OLD_PWD}
     fi
