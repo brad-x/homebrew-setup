@@ -34,7 +34,8 @@ fi
 echo "Creating Homebrew install prefix"
 if [ ! -d ${HomeDir}/${BrewPrefix} ]
 then
-    sudo -Hu ${UserName} mkdir -pv ${HomeDir}/${BrewPrefix}
+    sudo mkdir -pv ${HomeDir}/${BrewPrefix}
+    sudo chown -R ${UserName} ${HomeDir}/${BrewPrefix}
 else
     echo "brew installation directory exists, skipping."
 fi
