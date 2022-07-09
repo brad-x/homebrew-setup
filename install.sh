@@ -70,9 +70,19 @@ then
         > ~/.config/homebrew.include
     echo ""
     echo ""
-    echo "Secure homebrew setup is complete. To activate brew in your shell, add the following line:"
+    echo "Secure homebrew setup is complete. To activate brew in your shell, add the following line to"
+    echo "your shell profile:"
     echo ""
     echo "source ~/.config/homebrew.include"
+else
+cat ./templates/homebrew.shell.include | \
+        /usr/bin/sed s#__HomeDir__#${HomeDir}#g | \
+        /usr/bin/sed s#__BrewPrefix__#${BrewPrefix}#g | \
+        /usr/bin/sed s#__UserName__#${UserName}#g \
+        > ~/.config/homebrew.include.updated
     echo ""
-    echo "to your shell profile."
+    echo ""
+    echo "Secure homebrew setup is complete. We found an exiting ~/.config/homebrew.include, so we've"
+    echo "placed an updated copy in ~/.config/homebrew.include.updated. To activate brew in your shell,"
+    echo "review the differences and replace your current include with the updated copy if desired."
 fi

@@ -32,6 +32,9 @@ brew() {
     elif [[ $1 == "doctor" ]]
     then
         command brew doctor "${@:2}"
+    elif [[ $1 == "services" ]]
+    then
+        command brew services "${@:2}"
     else
 	BREW_OLD_PWD="${PWD}"
 	command cd /opt/homebrew && \
