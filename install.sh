@@ -2,8 +2,7 @@
 
 export UserName=pkg
 export GroupName=staff
-export HomeDir=/opt/homebrew
-export BrewPrefix=x86_64
+export HomeDir=/usr/local
 export Sudoer_TempFile=$(mktemp)
 
 LastID=$(dscl . -list /Users UniqueID | awk '{print $2}' | sort -n | tail -1)
@@ -23,51 +22,27 @@ else
     sudo dscl . -append /Groups/admin GroupMembership ${UserName}
 fi
 
-echo "Creating Homebrew installation directory"
-if [ ! -d ${HomeDir} ]
-then
-    sudo mkdir ${HomeDir}
-else
-    echo "${HomeDir} exists, skipping."
-fi
-
-echo "Creating Homebrew install prefix"
-if [ ! -d ${HomeDir}/${BrewPrefix} ]
-then
-    sudo mkdir -pv ${HomeDir}/${BrewPrefix}
-    sudo chown -R ${UserName} ${HomeDir}/${BrewPrefix}
-else
-    echo "brew installation directory exists, skipping."
-fi
-
-echo "Installing Homebrew "
-if [ ! -d ${HomeDir}/${BrewPrefix}/.git ]
-then
-    sudo -Hu ${UserName} git clone https://github.com/Homebrew/brew.git ${HomeDir}/${BrewPrefix}/
-else
-    echo "brew appears to be installed. Skipping."
-fi
-
-echo "Setting file ownerships for ${HomeDir}"
-sudo chown -R ${UserName}:${GroupName} ${HomeDir}
-
-echo "Creating sudoer file for Homebrew user ${UserName}"
 if [ ! -f /etc/sudoers.d/homebrew-sudoer ]
 then
+    echo "Creating sudoer file for Homebrew user ${UserName}"
     cat ./templates/homebrew.sudoer | \
         /usr/bin/sed s#__UserName__#${UserName}#g \
         > ${Sudoer_TempFile}
-    sudo mv -v ${Sudoer_TempFile} /etc/sudoers.d/homebrew-sudoer
-    sudo chown root:wheel /etc/sudoers.d/homebrew-sudoer
+    sudo /usr/bin/install -v -o root -g wheel ${Sudoer_TempFile} /etc/sudoers.d/homebrew-sudoer
+fi
+
+echo "Installing Homebrew..."
+sudo -EHu pkg NONINTERACTIVE=1 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+
+## Ensure ~/.config is present
+if [ ! -d ~/.config ]
+then
+    mkdir -pv ~/.config
 fi
 
 if [ ! -f ~/.config/homebrew.include ]
 then
-    cat ./templates/homebrew.shell.include | \
-        /usr/bin/sed s#__HomeDir__#${HomeDir}#g | \
-        /usr/bin/sed s#__BrewPrefix__#${BrewPrefix}#g | \
-        /usr/bin/sed s#__UserName__#${UserName}#g \
-        > ~/.config/homebrew.include
+    cp -v ./templates/homebrew.shell.include ~/.config/homebrew.include
     echo ""
     echo ""
     echo "Secure homebrew setup is complete. To activate brew in your shell, add the following line to"
@@ -75,14 +50,11 @@ then
     echo ""
     echo "source ~/.config/homebrew.include"
 else
-cat ./templates/homebrew.shell.include | \
-        /usr/bin/sed s#__HomeDir__#${HomeDir}#g | \
-        /usr/bin/sed s#__BrewPrefix__#${BrewPrefix}#g | \
-        /usr/bin/sed s#__UserName__#${UserName}#g \
-        > ~/.config/homebrew.include.updated
+    cp -v ./templates/homebrew.shell.include ~/.config/homebrew.include.updated
     echo ""
     echo ""
     echo "Secure homebrew setup is complete. We found an exiting ~/.config/homebrew.include, so we've"
     echo "placed an updated copy in ~/.config/homebrew.include.updated. To activate brew in your shell,"
     echo "review the differences and replace your current include with the updated copy if desired."
 fi
+
