@@ -2,7 +2,7 @@
 
 export UserName=pkg
 export GroupName=staff
-export HomeDir=/usr/local
+export HomeDir=/var/lib/homebrew
 export Sudoer_TempFile=$(mktemp)
 
 LastID=$(dscl . -list /Users UniqueID | awk '{print $2}' | sort -n | tail -1)
