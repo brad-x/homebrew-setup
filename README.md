@@ -1,7 +1,7 @@
 Secure Homebrew
 ===
 
-Simple script to install homebrew for secure usage. Sets up homebrew in /opt/homebrew/x86_64 despite admonitions to the contrary from upstream - `/usr/local` is a poor place to install software for security reasons as well as potential conflicts with many Mac software packages.
+Simple script to install homebrew for secure usage. Sets up homebrew in `/opt/homebrew` on Apple Silicon, and `/opt/homebrew/x86_64` on Intel, despite admonitions to the contrary from upstream for Intel (which defaults to `/usr/local`) - `/usr/local` is a poor place to install software for security reasons as well as potential conflicts with many Mac software packages. Intel can't just reuse `/opt/homebrew` either: Homebrew hard-refuses to run on an Intel processor when installed at its own ARM default prefix, with no override, so Intel needs a prefix that isn't one of Homebrew's two hardcoded defaults.
 
 Why Should I Install Homebrew This Way?
 ---
@@ -36,3 +36,18 @@ In order to use this repo you must be able to run `sudo` on your Mac.
 1. The script will place `~/.config/homebrew.include` in your home directory and should work with any Bourne compatible shell. Add the following line to your shell profile in order to start using it:
     - `source ~/.config/homebrew.include`
 1. The bash function strives to execute brew without privileges wherever possible - only administrative actions (install, reinstall, update, upgrade, remove, etc) require privilege elevation.
+
+Casks-only mode
+---
+
+Run `./install.sh --casks-only` instead of a plain `./install.sh` to also
+block formula installs, leaving only casks usable through `brew`. This
+deploys `brew-cask-only.sh` to `~/.config/brew-cask-only.sh` and points
+`~/.config/homebrew.include` at it instead of the plain alias — every
+`install`/`reinstall`/`upgrade` without `--cask`, every `tap` of
+anything but a cask-related tap, and `brew bundle` outright are refused
+before they ever reach the `pkg` user; everything that IS allowed
+(including read-only commands like `list`/`search`) still runs as `pkg`
+via `sudo -EHu pkg brew`, the same as the plain mode. See the comments
+at the top of `brew-cask-only.sh` for the `BREW_ALLOW_FORMULA=1`
+escape hatch for a genuine one-off formula need.

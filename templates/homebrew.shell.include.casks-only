@@ -1,0 +1,10 @@
+# This machine's Homebrew is casks-only: brew-cask-only.sh (deployed
+# alongside this file at ~/.config/brew-cask-only.sh by install.sh
+# --casks-only) traps `install`/`reinstall`/`upgrade`/`tap`/`bundle` and
+# routes anything it allows through to the real `brew` as the
+# unprivileged __UserName__ account, same as this repo's plain
+# homebrew.shell.include does. See ~/.config/brew-cask-only.sh for the
+# actual gating logic and its BREW_ALLOW_FORMULA=1 escape hatch.
+export BREW_SUDO_USER=__UserName__
+export BREW_BIN=__HomebrewPrefix__/bin/brew
+source ~/.config/brew-cask-only.sh

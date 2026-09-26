@@ -1,1 +1,2 @@
-alias brew='sudo -EHu pkg brew'
+export PATH="__HomebrewPrefix__/bin:$PATH"
+alias brew='sudo -EHu __UserName__ __HomebrewPrefix__/bin/brew'
